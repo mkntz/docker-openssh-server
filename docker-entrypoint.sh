@@ -25,6 +25,7 @@ prepare_user() {
     echo USER_PASSWORD="${USER_PASSWORD:=$(generate_random_password)}"
     echo USER_SUDO_ACCESS="${USER_SUDO_ACCESS:=false}"
     echo USER_HOME_DIR="${USER_HOME_DIR:=/home/$USER_NAME}"
+    echo USER_PUBLIC_KEYS="$USER_PUBLIC_KEYS"
     echo USER_PUBLIC_KEYS_URL="$USER_PUBLIC_KEYS_URL"
 
     addgroup "$USER_GROUP"
@@ -41,15 +42,20 @@ prepare_user() {
         adduser "$USER_NAME" "sudoers"
     fi
 
-    if [ -n "$USER_PUBLIC_KEYS_URL" ]; then
+    if [ -n "$USER_PUBLIC_KEYS" -o -n "$USER_PUBLIC_KEYS_URL" ]; then
         USER_SSH_DIR="$USER_HOME_DIR/.ssh"
+        AUTHORIZED_KEYS_FILE="$USER_SSH_DIR/authorized_keys"
 
         mkdir "$USER_SSH_DIR"
         chmod 700 "$USER_SSH_DIR"
 
-        wget -O "$USER_SSH_DIR/authorized_keys" "$USER_PUBLIC_KEYS_URL"
-        chmod 600 "$USER_SSH_DIR/authorized_keys"
+        if [ -n "$USER_PUBLIC_KEYS" ]; then
+            echo "$USER_PUBLIC_KEYS" > "$AUTHORIZED_KEYS_FILE"
+        else
+            wget -O "$USER_SSH_DIR/authorized_keys" "$USER_PUBLIC_KEYS_URL"
+        fi
 
+        chmod 600 "$USER_SSH_DIR/authorized_keys"
         chown -R "$USER_NAME:$USER_GROUP" "$USER_SSH_DIR"
     fi
 }
