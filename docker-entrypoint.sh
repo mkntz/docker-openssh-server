@@ -1,7 +1,9 @@
 #!/bin/sh
 
-generate_random_password() {
-    cat /dev/urandom | tr -cd '[:alnum:]' | fold -w 32 | head -n 1
+generate_random_string() {
+    local length="${1:-32}"
+
+    cat /dev/urandom | tr -cd '[:alnum:]' | fold -w $length | head -n 1
 }
 
 prepare_sshd() {
@@ -20,9 +22,9 @@ prepare_sshd() {
 }
 
 prepare_user() {
-    echo USER_NAME="${USER_NAME:=alpine}"
-    echo USER_GROUP="${USER_GROUP:=alpine}"
-    echo USER_PASSWORD="${USER_PASSWORD:=$(generate_random_password)}"
+    echo USER_NAME="${USER_NAME:=$(generate_random_string 16)}"
+    echo USER_GROUP="${USER_GROUP:=$USER_NAME}"
+    echo USER_PASSWORD="${USER_PASSWORD:=$(generate_random_string)}"
     echo USER_SUDO_ACCESS="${USER_SUDO_ACCESS:=false}"
     echo USER_HOME_DIR="${USER_HOME_DIR:=/home/$USER_NAME}"
     echo USER_PUBLIC_KEYS="$USER_PUBLIC_KEYS"
