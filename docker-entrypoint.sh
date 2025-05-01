@@ -35,10 +35,10 @@ prepare_user() {
             -G "$USER_GROUP" \
             -D "$USER_NAME"
     
-    CHPASSWD_TEMP_PASSWORDS_FILE="$(mktemp)"
-    echo "$USER_NAME:$USER_PASSWORD" > "$CHPASSWD_TEMP_PASSWORDS_FILE"
-    chpasswd < "$CHPASSWD_TEMP_PASSWORDS_FILE"
-    rm -rf "$CHPASSWD_TEMP_PASSWORDS_FILE"
+    TEMP_CHPASSWD_PASSWORDS_FILE="$(mktemp)"
+    echo "$USER_NAME:$USER_PASSWORD" > "$TEMP_CHPASSWD_PASSWORDS_FILE"
+    chpasswd < "$TEMP_CHPASSWD_PASSWORDS_FILE"
+    rm -rf "$TEMP_CHPASSWD_PASSWORDS_FILE"
 
     if [ "$(echo $USER_SUDO_ACCESS | tr '[:upper:]' '[:lower:]')" = "true" ]; then
         adduser "$USER_NAME" "sudoers"
