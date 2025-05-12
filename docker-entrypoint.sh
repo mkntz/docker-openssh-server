@@ -7,9 +7,14 @@ generate_random_string() {
 }
 
 configure_sshd() {
+    echo "##############################"
+    echo "# Configuring OpenSSH Server #"
+    echo "##############################"
+
     local SSHD_CUSTOM_CONFIG_FILE="/etc/ssh/sshd_config.d/99-custom-config.conf"
 
     # Default Config
+    export SSHD_CONFIG_Port="${SSHD_CONFIG_Port:-${PORT:-22}}"
     export SSHD_CONFIG_PasswordAuthentication=yes
 
     if ! ls -1 /etc/ssh/ssh_host_*_key &>/dev/null; then
@@ -17,11 +22,19 @@ configure_sshd() {
     fi
 
     if [ ! -f "$SSHD_CUSTOM_CONFIG_FILE" ]; then
-        env | egrep "^SSHD_CONFIG_" | sed 's/^SSHD_CONFIG_//g' | sed 's/=/ /g' > "$SSHD_CUSTOM_CONFIG_FILE"
+        env \
+        | egrep "^SSHD_CONFIG_" \
+        | sed 's/^SSHD_CONFIG_//g' \
+        | sed 's/=/ /g' \
+        | tee "$SSHD_CUSTOM_CONFIG_FILE"
     fi
 }
 
 configure_root() {
+    echo "####################"
+    echo "# Configuring Root #"
+    echo "####################"
+
     echo ROOT_NAME="${ROOT_NAME:=root}"
     echo ROOT_GROUP="${ROOT_GROUP:=root}"
     echo ROOT_HOME_DIR="${ROOT_HOME_DIR:=/root}"
@@ -47,6 +60,10 @@ configure_root() {
 }
 
 configure_user() {
+    echo "####################"
+    echo "# Configuring User #"
+    echo "####################"
+
     echo USER_NAME="${USER_NAME:=$(generate_random_string 16)}"
     echo USER_GROUP="${USER_GROUP:=$USER_NAME}"
     echo USER_PASSWORD="${USER_PASSWORD:=$(generate_random_string)}"
