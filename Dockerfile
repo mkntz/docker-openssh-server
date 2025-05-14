@@ -1,11 +1,11 @@
 FROM alpine
 
-ARG OPENSSH_SERVER_VERSION
+ARG APP_VERSION
 
 ENV PORT=22
 
 RUN apk add --no-cache \
-        openssh-server~=${OPENSSH_SERVER_VERSION} \
+        openssh-server~=${APP_VERSION} \
         sudo \
  && addgroup -S sudoers \
  && echo '%sudoers ALL=(ALL) ALL' > /etc/sudoers.d/sudoers
