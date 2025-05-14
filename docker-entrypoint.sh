@@ -13,15 +13,14 @@ configure_sshd() {
 
     local SSHD_CUSTOM_CONFIG_FILE="/etc/ssh/sshd_config.d/99-custom-config.conf"
 
-    # Default Config
-    export SSHD_CONFIG_Port="${SSHD_CONFIG_Port:-${PORT:-22}}"
-    export SSHD_CONFIG_PasswordAuthentication=yes
-
-    if ! ls -1 /etc/ssh/ssh_host_*_key &>/dev/null; then
-        ssh-keygen -A
-    fi
+    ssh-keygen -A
+    ls -1 /etc/ssh/ssh_host_*_key.pub | xargs -n1 ssh-keygen -l -E sha256 -f
 
     if [ ! -f "$SSHD_CUSTOM_CONFIG_FILE" ]; then
+        # Default Config
+        export SSHD_CONFIG_Port="${SSHD_CONFIG_Port:-${PORT:-22}}" \
+               SSHD_CONFIG_PasswordAuthentication="${SSHD_CONFIG_PasswordAuthentication:-yes}"
+
         env \
         | egrep "^SSHD_CONFIG_" \
         | sed 's/^SSHD_CONFIG_//g' \
