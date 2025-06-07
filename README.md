@@ -10,7 +10,7 @@ To run the OpenSSH server, execute the following command:
 docker run --detach \
            --name openssh-server \
            --publish 2222:22 \
-           ghcr.io/mkntz/openssh-server:9.9p2
+           ghcr.io/mkntz/openssh-server:10.0p2
 ```
 
 ## Environment Variables
@@ -22,7 +22,7 @@ docker run --detach \
            --name openssh-server \
            --env-file .env \
            --publish 2222:22 \
-           ghcr.io/mkntz/openssh-server:9.9p2
+           ghcr.io/mkntz/openssh-server:10.0p2
 ```
 
 ### OpenSSH Server Configuration
@@ -81,5 +81,5 @@ To build the Docker image, run the following command:
 
 ```bash
 docker build --platform "linux/amd64,linux/arm64" \
-             --tag openssh-server:9.9p2 .
+             --tag openssh-server:10.0p2 .
 ```
