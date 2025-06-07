@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.21
 
 ENV PORT=22
 
