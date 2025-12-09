@@ -6,8 +6,6 @@ on:
       - "*"
 
 env:
-  ORGANIZATION: mkntz
-  APP_NAME: openssh-server
   ALPINE_VERSION: 3.23
 
 jobs:
@@ -36,7 +34,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ${{ env.ORGANIZATION }}/${{ env.APP_NAME }}
+            ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY_NAME }}
           tags: |
             type=ref,event=tag
             type=match,pattern=(\d+.\d+)p(\d+),group=1
@@ -53,11 +51,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-      
-      - name: Update Docker Hub repository description
-        uses: peter-evans/dockerhub-description@v5
-        with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: ${{ env.ORGANIZATION }}/${{ env.APP_NAME }}
-          short-description: ${{ github.event.repository.description }}

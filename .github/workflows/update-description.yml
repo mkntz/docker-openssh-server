@@ -1,0 +1,23 @@
+name: Update Docker Hub description
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "README.md"
+
+jobs:
+  update-description:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v6
+
+      - name: Update Docker Hub short and full description
+        uses: peter-evans/dockerhub-description@v5
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ vars.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY_NAME }}
+          short-description: ${{ github.event.repository.description }}
