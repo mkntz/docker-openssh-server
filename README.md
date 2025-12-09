@@ -11,7 +11,7 @@
 - **Maintained by**: [mkntz](https://github.com/mkntz)
 - **Where to get help**: [GitHub Issues](https://github.com/mkntz/docker-openssh-server/issues)
 - **Where to file issues**: [GitHub Issues](https://github.com/mkntz/docker-openssh-server/issues)
-- **Source of this description**: [GitHub repo README](https://github.com/mkntz/docker-openssh-server)
+- **Source of this description**: [GitHub Repository](https://github.com/mkntz/docker-openssh-server)
 - **Supported architectures**: `amd64`, `arm64`
 - **Image updates**: Automated builds on new Alpine releases and OpenSSH updates
 
@@ -396,7 +396,3 @@ Contributions are welcome! Please feel free to submit issues or pull requests.
 - [OpenSSH Official Documentation](https://www.openssh.com/manual.html)
 - [Alpine Linux](https://alpinelinux.org/)
 - [Docker Documentation](https://docs.docker.com/)
-
----
-
-**Repository**: [github.com/mkntz/docker-openssh-server](https://github.com/mkntz/docker-openssh-server)
