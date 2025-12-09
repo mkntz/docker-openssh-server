@@ -6,7 +6,6 @@ on:
       - "*"
 
 env:
-  REGISTRY: docker.io
   ORGANIZATION: mkntz
   APP_NAME: openssh-server
   ALPINE_VERSION: 3.21
@@ -29,7 +28,6 @@ jobs:
       - name: Log in to the Docker Hub
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.REGISTRY }}
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
@@ -38,9 +36,11 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ${{ env.REGISTRY }}/${{ env.ORGANIZATION }}/${{ env.APP_NAME }}
+            ${{ env.ORGANIZATION }}/${{ env.APP_NAME }}
           tags: |
             type=ref,event=tag
+            type=match,pattern=(\d+.\d+)p(\d+),group=1
+            type=match,pattern=(\d+).(\d+)p(\d+),group=1
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
@@ -53,3 +53,11 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      
+      - name: Update Docker Hub repository description
+        uses: peter-evans/dockerhub-description@v5
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ env.ORGANIZATION }}/${{ env.APP_NAME }}
+          short-description: ${{ github.event.repository.description }}
