@@ -8,7 +8,7 @@ on:
 env:
   ORGANIZATION: mkntz
   APP_NAME: openssh-server
-  ALPINE_VERSION: 3.21
+  ALPINE_VERSION: 3.22
 
 jobs:
   build-push-to-registry:

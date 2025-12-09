@@ -1,8 +1,8 @@
 # OpenSSH Server Docker Image
 
-[![Docker Image](https://img.shields.io/badge/mkntz%2Fopenssh--server-9.9p2-2496ED.svg?logo=docker&logoColor=2496ED&labelColor=whitesmoke)](https://hub.docker.com/r/mkntz/openssh-server)
-[![Alpine Version](https://img.shields.io/badge/Alpine-3.21-0D597F.svg?logo=alpinelinux&logoColor=0D597F&labelColor=whitesmoke)](https://alpinelinux.org/)
-[![OpenSSH Version](https://img.shields.io/badge/OpenSSH-9.9p2-F2CA30.svg?logo=openbsd&logoColor=F2CA30&labelColor=whitesmoke)](https://www.openssh.com/)
+[![Docker Image](https://img.shields.io/badge/mkntz%2Fopenssh--server-10.0p1-2496ED.svg?logo=docker&logoColor=2496ED&labelColor=whitesmoke)](https://hub.docker.com/r/mkntz/openssh-server)
+[![Alpine Version](https://img.shields.io/badge/Alpine-3.22-0D597F.svg?logo=alpinelinux&logoColor=0D597F&labelColor=whitesmoke)](https://alpinelinux.org/)
+[![OpenSSH Version](https://img.shields.io/badge/OpenSSH-10.0p1-F2CA30.svg?logo=openbsd&logoColor=F2CA30&labelColor=whitesmoke)](https://www.openssh.com/)
 
 ---
 
@@ -17,7 +17,8 @@
 
 ## Supported tags and respective `Dockerfile` links
 
-- [`9.9p2`, `9.9`, `9`, `latest`](https://github.com/mkntz/docker-openssh-server/blob/9.9p2/Dockerfile)
+- [`10.0p1`, `10.0`, `10`, `latest`](https://github.com/mkntz/docker-openssh-server/blob/10.0p1/Dockerfile)
+- [`9.9p2`, `9.9`, `9`](https://github.com/mkntz/docker-openssh-server/blob/9.9p2/Dockerfile)
 
 ---
 
@@ -33,7 +34,7 @@ Run an OpenSSH server with randomly generated credentials:
 docker run -d \
   --name openssh-server \
   -p 2222:22 \
-  mkntz/openssh-server:9.9p2
+  mkntz/openssh-server:10.0p1
 ```
 
 Check the logs to retrieve the generated username and password:
@@ -68,7 +69,7 @@ docker run -d \
   -p 2222:22 \
   -e USER_NAME=myuser \
   -e USER_PASSWORD=mypassword \
-  mkntz/openssh-server:9.9p2
+  mkntz/openssh-server:10.0p1
 ```
 
 ### SSH Key Authentication
@@ -81,7 +82,7 @@ docker run -d \
   -p 2222:22 \
   -e USER_NAME=myuser \
   -e USER_PUBLIC_KEYS="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC... user@host" \
-  mkntz/openssh-server:9.9p2
+  mkntz/openssh-server:10.0p1
 ```
 
 Using GitHub public keys:
@@ -92,7 +93,7 @@ docker run -d \
   -p 2222:22 \
   -e USER_NAME=myuser \
   -e USER_PUBLIC_KEYS_URL="https://github.com/username.keys" \
-  mkntz/openssh-server:9.9p2
+  mkntz/openssh-server:10.0p1
 ```
 
 ### User with Sudo Access
@@ -104,7 +105,7 @@ docker run -d \
   -e USER_NAME=admin \
   -e USER_PASSWORD=secure123 \
   -e USER_SUDO_ACCESS=true \
-  mkntz/openssh-server:9.9p2
+  mkntz/openssh-server:10.0p1
 ```
 
 ### Root Access Configuration
@@ -117,7 +118,7 @@ docker run -d \
   -p 2222:22 \
   -e ROOT_PUBLIC_KEYS_URL="https://github.com/username.keys" \
   -e SSHD_CONFIG_PermitRootLogin=yes \
-  mkntz/openssh-server:9.9p2
+  mkntz/openssh-server:10.0p1
 ```
 
 ### Advanced Configuration with Docker Compose
@@ -129,7 +130,7 @@ version: '3.8'
 
 services:
   openssh-server:
-    image: mkntz/openssh-server:9.9p2
+    image: mkntz/openssh-server:10.0p1
     container_name: openssh-server
     ports:
       - "2222:22"
@@ -174,7 +175,7 @@ docker run -d \
   --name openssh-server \
   --env-file .env \
   -p 2222:22 \
-  mkntz/openssh-server:9.9p2
+  mkntz/openssh-server:10.0p1
 ```
 
 ## ⚙️ Configuration
@@ -207,7 +208,7 @@ docker run -d \
   -e SSHD_CONFIG_ClientAliveInterval=60 \
   -e SSHD_CONFIG_ClientAliveCountMax=3 \
   -p 2222:22 \
-  mkntz/openssh-server:9.9p2
+  mkntz/openssh-server:10.0p1
 ```
 
 #### Root User Configuration
@@ -241,7 +242,7 @@ To add multiple SSH keys, separate them with `\n`:
 docker run -d \
   -e USER_PUBLIC_KEYS="ssh-rsa AAAAB3Nza...key1 user1@host\nssh-rsa AAAAB3Nza...key2 user2@host" \
   -p 2222:22 \
-  mkntz/openssh-server:9.9p2
+  mkntz/openssh-server:10.0p1
 ```
 
 ### Volume Mounts
@@ -255,7 +256,7 @@ docker run -d \
   -v /path/to/user/data:/home/myuser \
   -v /path/to/ssh/config:\/etc\/ssh\/sshd_config.d\/custom.conf:ro \
   -e USER_NAME=myuser \
-  mkntz/openssh-server:9.9p2
+  mkntz/openssh-server:10.0p1
 ```
 
 ## 🔒 Security Recommendations
@@ -294,7 +295,7 @@ docker run -d \
   -e USER_NAME=tunnel \
   -e USER_PASSWORD=secure123 \
   -e SSHD_CONFIG_AllowTcpForwarding=yes \
-  mkntz/openssh-server:9.9p2
+  mkntz/openssh-server:10.0p1
 
 # Create tunnel from client
 ssh -L 5432:database:5432 -p 2222 tunnel@localhost
@@ -311,7 +312,7 @@ docker run -d \
   -v /path/to/files:/home/sftpuser/files \
   -e USER_NAME=sftpuser \
   -e USER_PASSWORD=sftppass \
-  mkntz/openssh-server:9.9p2
+  mkntz/openssh-server:10.0p1
 
 # Connect via SFTP
 sftp -P 2222 sftpuser@localhost
@@ -329,7 +330,7 @@ docker run -d \
   -e USER_NAME=developer \
   -e USER_SUDO_ACCESS=true \
   -e USER_PUBLIC_KEYS_URL="https://github.com/developer.keys" \
-  mkntz/openssh-server:9.9p2
+  mkntz/openssh-server:10.0p1
 ```
 
 ## 🐳 Building the Image
@@ -337,7 +338,7 @@ docker run -d \
 ### Standard Build
 
 ```bash
-docker build -t openssh-server:9.9p2 .
+docker build -t openssh-server:10.0p1 .
 ```
 
 ### Multi-platform Build
@@ -345,7 +346,7 @@ docker build -t openssh-server:9.9p2 .
 ```bash
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
-  --tag openssh-server:9.9p2 \
+  --tag openssh-server:10.0p1 \
   .
 ```
 
