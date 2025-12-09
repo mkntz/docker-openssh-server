@@ -1,4 +1,6 @@
-FROM alpine:3.22
+ARG ALPINE_VERSION=latest
+
+FROM alpine:${ALPINE_VERSION}
 
 ENV PORT=22
 
