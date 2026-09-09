@@ -4,3 +4,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    assignees:
+      - "mkntz"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
