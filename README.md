@@ -23,6 +23,17 @@
 
 ---
 
+## Table of Contents
+
+- [Quick Start](#-quick-start)
+- [Features](#-features)
+- [Usage Examples](#-usage-examples)
+- [Configuration](#-configuration)
+- [Security Recommendations](#-security-recommendations)
+- [Common Use Cases](#-common-use-cases)
+- [Building the Image](#-building-the-image)
+- [Troubleshooting](#-troubleshooting)
+
 ## Introduction
 
 A lightweight, secure, and highly configurable OpenSSH server Docker image based on Alpine Linux. Perfect for development environments, SSH tunneling, SFTP access, and secure remote access scenarios.
@@ -127,8 +138,6 @@ docker run -d \
 Create a `docker-compose.yml`:
 
 ```yaml
-version: '3.8'
-
 services:
   openssh-server:
     image: mkntz/openssh-server:10.2p1
@@ -153,7 +162,7 @@ volumes:
 Run with:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ### Using Environment File
@@ -189,8 +198,7 @@ You can configure any `sshd_config` parameter by prefixing it with `SSHD_CONFIG_
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `PORT` | SSH server port | `22` |
-| `SSHD_CONFIG_Port` | SSH server port (takes precedence over `PORT`) | `22` |
+| `SSHD_CONFIG_Port` | SSH server port | `22` |
 | `SSHD_CONFIG_PasswordAuthentication` | Enable password authentication | `yes` |
 | `SSHD_CONFIG_PubkeyAuthentication` | Enable public key authentication | `yes` |
 | `SSHD_CONFIG_PermitRootLogin` | Allow root login | `prohibit-password` |
@@ -199,6 +207,8 @@ You can configure any `sshd_config` parameter by prefixing it with `SSHD_CONFIG_
 | `SSHD_CONFIG_X11Forwarding` | Enable X11 forwarding | `no` |
 | `SSHD_CONFIG_ClientAliveInterval` | Seconds before sending keepalive message | - |
 | `SSHD_CONFIG_ClientAliveCountMax` | Maximum keepalive messages | - |
+
+> **Note:** The `PORT` environment variable sets the initial default port before the entrypoint runs. If both `PORT` and `SSHD_CONFIG_Port` are set, `SSHD_CONFIG_Port` takes precedence.
 
 **Example:**
 
@@ -216,6 +226,9 @@ docker run -d \
 
 | Variable | Description | Default |
 |----------|-------------|---------|
+| `ROOT_NAME` | Username for the root account | `root` |
+| `ROOT_GROUP` | Group name for the root account | `root` |
+| `ROOT_HOME_DIR` | Home directory path for the root account | `/root` |
 | `ROOT_PUBLIC_KEYS` | Direct SSH public keys (separate multiple with `\n`) | - |
 | `ROOT_PUBLIC_KEYS_URL` | URL to fetch public keys (e.g., GitHub keys URL) | - |
 
@@ -245,6 +258,8 @@ docker run -d \
   -p 2222:22 \
   mkntz/openssh-server:10.2p1
 ```
+
+> **Note:** The `\n` separator works because BusyBox `echo` inside the Alpine container interprets it as a literal newline. Depending on your host shell and how you quote the value, the `\n` may be passed literally (as two characters) instead of being converted to a newline. If keys are not being applied, verify that the value reaches the container with actual newlines (e.g., use `printf` or heredoc syntax instead of double-quoted strings).
 
 ### Volume Mounts
 
@@ -350,6 +365,8 @@ docker buildx build \
   --tag openssh-server:10.2p1 \
   .
 ```
+
+> **Note:** Multi-arch builds with `--platform` require `--push` to send the image to a registry. The default builder cannot `--load` multi-platform images locally.
 
 ## 🔍 Troubleshooting
 
