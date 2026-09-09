@@ -41,7 +41,7 @@ jobs:
             type=match,pattern=(\d+).(\d+)p(\d+),group=1
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           build-args: |
