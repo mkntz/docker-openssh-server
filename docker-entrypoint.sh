@@ -1,9 +1,10 @@
 #!/bin/sh
+set -eu
 
 generate_random_string() {
     local length="${1:-32}"
 
-    cat /dev/urandom | tr -cd '[:alnum:]' | fold -w $length | head -n 1
+    tr -cd '[:alnum:]' < /dev/urandom | fold -w $length | head -n 1
 }
 
 configure_sshd() {
@@ -37,14 +38,14 @@ configure_root() {
     echo ROOT_NAME="${ROOT_NAME:=root}"
     echo ROOT_GROUP="${ROOT_GROUP:=root}"
     echo ROOT_HOME_DIR="${ROOT_HOME_DIR:=/root}"
-    echo ROOT_PUBLIC_KEYS="$ROOT_PUBLIC_KEYS"
-    echo ROOT_PUBLIC_KEYS_URL="$ROOT_PUBLIC_KEYS_URL"
+    echo ROOT_PUBLIC_KEYS="${ROOT_PUBLIC_KEYS:-}"
+    echo ROOT_PUBLIC_KEYS_URL="${ROOT_PUBLIC_KEYS_URL:-}"
 
     if [ -n "$ROOT_PUBLIC_KEYS" -o -n "$ROOT_PUBLIC_KEYS_URL" ]; then
         local ROOT_SSH_DIR="$ROOT_HOME_DIR/.ssh"
         local ROOT_AUTHORIZED_KEYS_FILE="$ROOT_SSH_DIR/authorized_keys"
 
-        mkdir "$ROOT_SSH_DIR"
+        mkdir -p "$ROOT_SSH_DIR"
         chmod 700 "$ROOT_SSH_DIR"
 
         if [ -n "$ROOT_PUBLIC_KEYS" ]; then
@@ -68,8 +69,8 @@ configure_user() {
     echo USER_PASSWORD="${USER_PASSWORD:=$(generate_random_string)}"
     echo USER_SUDO_ACCESS="${USER_SUDO_ACCESS:=false}"
     echo USER_HOME_DIR="${USER_HOME_DIR:=/home/$USER_NAME}"
-    echo USER_PUBLIC_KEYS="$USER_PUBLIC_KEYS"
-    echo USER_PUBLIC_KEYS_URL="$USER_PUBLIC_KEYS_URL"
+    echo USER_PUBLIC_KEYS="${USER_PUBLIC_KEYS:-}"
+    echo USER_PUBLIC_KEYS_URL="${USER_PUBLIC_KEYS_URL:-}"
 
     addgroup "$USER_GROUP"
     adduser -h "$USER_HOME_DIR" \
@@ -89,7 +90,7 @@ configure_user() {
         local USER_SSH_DIR="$USER_HOME_DIR/.ssh"
         local USER_AUTHORIZED_KEYS_FILE="$USER_SSH_DIR/authorized_keys"
 
-        mkdir "$USER_SSH_DIR"
+        mkdir -p "$USER_SSH_DIR"
         chmod 700 "$USER_SSH_DIR"
 
         if [ -n "$USER_PUBLIC_KEYS" ]; then
