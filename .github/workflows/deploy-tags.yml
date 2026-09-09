@@ -6,7 +6,7 @@ on:
       - "*"
 
 env:
-  ALPINE_VERSION: 3.23
+  ALPINE_VERSION: 3.24
 
 jobs:
   build-push-to-registry:
