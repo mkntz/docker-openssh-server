@@ -38,8 +38,8 @@ configure_root() {
     echo ROOT_NAME="${ROOT_NAME:=root}"
     echo ROOT_GROUP="${ROOT_GROUP:=root}"
     echo ROOT_HOME_DIR="${ROOT_HOME_DIR:=/root}"
-    echo ROOT_PUBLIC_KEYS="${ROOT_PUBLIC_KEYS:-}"
-    echo ROOT_PUBLIC_KEYS_URL="${ROOT_PUBLIC_KEYS_URL:-}"
+    echo ROOT_PUBLIC_KEYS="${ROOT_PUBLIC_KEYS:=}"
+    echo ROOT_PUBLIC_KEYS_URL="${ROOT_PUBLIC_KEYS_URL:=}"
 
     if [ -n "$ROOT_PUBLIC_KEYS" -o -n "$ROOT_PUBLIC_KEYS_URL" ]; then
         local ROOT_SSH_DIR="$ROOT_HOME_DIR/.ssh"
@@ -69,8 +69,8 @@ configure_user() {
     echo USER_PASSWORD="${USER_PASSWORD:=$(generate_random_string)}"
     echo USER_SUDO_ACCESS="${USER_SUDO_ACCESS:=false}"
     echo USER_HOME_DIR="${USER_HOME_DIR:=/home/$USER_NAME}"
-    echo USER_PUBLIC_KEYS="${USER_PUBLIC_KEYS:-}"
-    echo USER_PUBLIC_KEYS_URL="${USER_PUBLIC_KEYS_URL:-}"
+    echo USER_PUBLIC_KEYS="${USER_PUBLIC_KEYS:=}"
+    echo USER_PUBLIC_KEYS_URL="${USER_PUBLIC_KEYS_URL:=}"
 
     addgroup "$USER_GROUP"
     adduser -h "$USER_HOME_DIR" \
